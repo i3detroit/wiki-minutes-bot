@@ -47,7 +47,7 @@ def write_minutes():
         title = 'Minutes:Board Meeting Minutes'
         template_page = pywikibot.Page(site, u'Board_Meeting_Minutes_Template')
     else:
-        print("Not first, second, or final Tuesday. Exiting.")
+        print(str(today_date) + ' Not first, second, or final Tuesday. Exiting.')
         exit()
 
     date_str = '{:%m-%d-%Y}'.format(meeting_date)
@@ -56,11 +56,12 @@ def write_minutes():
     meeting_page_name = u'{} {}'.format(title, date_title_str)
     newpage = pywikibot.Page(site, meeting_page_name)
     if len(newpage.text) > 0:
-        print('Error: Page already exists. Exiting.')
+        print(str(today_date) + ' Error: Page already exists. Exiting.')
         exit()
 
     template_text = str(bsoup(template_page.text, 'html.parser').pre)[5:-6]
     newpage.text = sub('01-01-20\d\d', date_str, template_text)
+    print(str(today_date) + ' Saving minutes.')
     newpage.save(u'Automatic minutes creation')
 
 
@@ -68,7 +69,7 @@ if __name__ == '__main__':
     # Exit if it's not Tuesday
     today_date = date.today()
     if today_date.weekday() != 1:
-        print("Not Tuesday. Exiting.")
+        print(str(today_date) + ' Not Tuesday. Exiting.')
         exit()
     else:
         write_minutes()
