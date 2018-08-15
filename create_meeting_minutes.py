@@ -51,7 +51,7 @@ def write_minutes():
         exit()
 
     date_str = '{:%m-%d-%Y}'.format(meeting_date)
-    date_title_str = '{:%m%d%Y}'.format(meeting_date)
+    date_title_str = '{:%Y%m%d}'.format(meeting_date)
 
     meeting_page_name = u'{} {}'.format(title, date_title_str)
     newpage = pywikibot.Page(site, meeting_page_name)
