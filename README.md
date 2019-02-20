@@ -3,5 +3,5 @@ Creates meeting minutes wiki page from template page a week in advance. Set up i
 
 Expects to be run on a Tuesday. Add to crontab and fill in paths:
 ```
-59 11 * * 2 cd /$path && /$pypath/bin/python /$path/create_meeting_minutes.py >> /$log_location/minutes_creation.log 2>&1
+0 0 * * 2 cd /$path && /$pypath/bin/python /$path/create_meeting_minutes.py >> /$log_location/minutes_creation.log 2>&1
 ```
