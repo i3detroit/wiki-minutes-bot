@@ -6,7 +6,7 @@
 #  - first tuesday: create board minutes
 #  - second tuesday: create member minutes
 #  - final tuesday: create member minutes
-# copyright 2018 Mike Fink
+# copyright 2019 Mike Fink
 # MIT License
 
 from bs4 import BeautifulSoup as bsoup
@@ -24,36 +24,32 @@ def nth_weekday(the_date, nth_week, week_day):
     return temp
 
 
-def write_minutes():
+def write_minutes(today_date):
     ''' Write meeting minutes based on page template for the next meeting '''
-    today_date = date.today()
-    meeting_date = today_date + timedelta(7)
-
-    is_first_tuesday = nth_weekday(today_date, 1, 1) == today_date
-    is_second_tuesday = nth_weekday(today_date, 2, 1) == today_date
-    # today is final tuesday if (today is 4th tuesday and 5th tuesday is next month)
-    #    or (today is 5th tuesday and next tuesday is a different month)
-    is_final_tuesday = ((nth_weekday(today_date, 4, 1) == today_date and 
-                        nth_weekday(today_date, 5, 1).month != today_date.month) or 
-                        (nth_weekday(today_date, 5, 1) == today_date and
-                        today_date.month != meeting_date.month))
-
     site = pywikibot.Site()
-
-    if is_second_tuesday or is_final_tuesday:
+    # First Tuesday Member Meeting - next meeting is in 2 weeks
+    if today_date == nth_weekday(today_date, 1, 1):
         title = 'Minutes:Meeting Minutes'
         template_page = pywikibot.Page(site, u'Meeting_Minutes_Template')
-    elif is_first_tuesday:
+        meeting_date = today_date + timedelta(14)
+    # Third Tuesday Member Meeting - next meeting is first tuesday of next month
+    elif nth_weekday(today_date, 3, 1) == today_date:
+        title = 'Minutes:Meeting Minutes'
+        template_page = pywikibot.Page(site, u'Meeting_Minutes_Template')
+        meeting_date = nth_weekday(today_date + timedelta(weeks=4), 1, 1)
+    # Second Tuesday Board Meeting - next meeting is second tuesay of next month
+    elif today_date == nth_weekday(today_date, 2, 1):
         title = 'Minutes:Board Meeting Minutes'
         template_page = pywikibot.Page(site, u'Board_Meeting_Minutes_Template')
+        meeting_date = nth_weekday(today_date + timedelta(weeks=4), 2, 1)
     else:
-        print(str(today_date) + ' Not first, second, or final Tuesday. Exiting.')
+        print(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
         exit()
 
     date_str = '{:%m-%d-%Y}'.format(meeting_date)
     date_title_str = '{:%Y%m%d}'.format(meeting_date)
-
     meeting_page_name = u'{} {}'.format(title, date_title_str)
+    
     newpage = pywikibot.Page(site, meeting_page_name)
     if len(newpage.text) > 0:
         print(str(today_date) + ' Error: Page already exists. Exiting.')
@@ -61,15 +57,16 @@ def write_minutes():
 
     template_text = str(bsoup(template_page.text, 'html.parser').pre)[5:-6]
     newpage.text = sub('01-01-20\d\d', date_str, template_text)
-    print(str(today_date) + ' Saving minutes.')
+    print('{} Saving minutes for {}'.format(str(today_date), str(meeting_date)))
     newpage.save(u'Automatic minutes creation')
 
 
 if __name__ == '__main__':
     # Exit if it's not Tuesday
     today_date = date.today()
-    if today_date.weekday() != 1:
-        print(str(today_date) + ' Not Tuesday. Exiting.')
+    if today_date.weekday() == 1:
+        write_minutes(today_date)
         exit()
     else:
-        write_minutes()
+        print(str(today_date) + ' Not Tuesday. Exiting.')
+        exit()
