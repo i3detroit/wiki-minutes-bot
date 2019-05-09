@@ -24,14 +24,19 @@ def nth_weekday(the_date, nth_week, week_day):
     return temp
 
 
-def write_minutes(today_date):
+def check_day(today_date):
     ''' Write meeting minutes based on page template for the next meeting '''
-    site = pywikibot.Site()
     # First Tuesday Member Meeting - next meeting is in 2 weeks
     if today_date == nth_weekday(today_date, 1, 1):
         title = 'Minutes:Meeting Minutes'
         template_page = pywikibot.Page(site, u'Meeting_Minutes_Template')
         meeting_date = today_date + timedelta(14)
+        write_minutes(title, template_page, meeting_date)
+        # First Tuesday Fundraising Meeting - next meeting first tuesday next month
+        title = 'Minutes:Fundraising Committee Meeting Minutes'
+        template_page = pywikibot.Page(site, u'Fundraising Committee Meeting Minutes Template')
+        meeting_date = nth_weekday(date.today() + timedelta(31), 1, 1)
+        write_minutes(title, template_page, meeting_date)
     # Third Tuesday Member Meeting - next meeting is first tuesday of next month
     elif nth_weekday(today_date, 3, 1) == today_date:
         title = 'Minutes:Meeting Minutes'
@@ -46,6 +51,7 @@ def write_minutes(today_date):
         print(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
         exit()
 
+def write_minutes(title, template_page, meeting_date):
     date_str = '{:%m-%d-%Y}'.format(meeting_date)
     date_title_str = '{:%Y%m%d}'.format(meeting_date)
     meeting_page_name = u'{} {}'.format(title, date_title_str)
@@ -65,7 +71,8 @@ if __name__ == '__main__':
     # Exit if it's not Tuesday
     today_date = date.today()
     if today_date.weekday() == 1:
-        write_minutes(today_date)
+        site = pywikibot.Site()
+        check_day(today_date)
         exit()
     else:
         print(str(today_date) + ' Not Tuesday. Exiting.')
