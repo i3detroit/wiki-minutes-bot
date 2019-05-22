@@ -42,11 +42,13 @@ def check_day(today_date):
         title = 'Minutes:Meeting Minutes'
         template_page = pywikibot.Page(site, u'Meeting_Minutes_Template')
         meeting_date = nth_weekday(today_date + timedelta(weeks=4), 1, 1)
+        write_minutes(title, template_page, meeting_date)
     # Second Tuesday Board Meeting - next meeting is second tuesay of next month
     elif today_date == nth_weekday(today_date, 2, 1):
         title = 'Minutes:Board Meeting Minutes'
         template_page = pywikibot.Page(site, u'Board_Meeting_Minutes_Template')
         meeting_date = nth_weekday(today_date + timedelta(weeks=4), 2, 1)
+        write_minutes(title, template_page, meeting_date)
     else:
         print(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
         exit()
