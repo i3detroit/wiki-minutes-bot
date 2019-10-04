@@ -1,11 +1,4 @@
-apicache-py3/
-bin/
-include/
-lib/
 minutes_creation.log
-pip-selfcheck.json
 pywikibot.lwp
-throttle.ctrl
-user-config.py.mkfink
-user-password.py
-
+token.json
+pwb
