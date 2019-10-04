@@ -10,7 +10,10 @@ from bs4 import BeautifulSoup as bsoup
 import pywikibot
 import datetime
 import re
+import os
+import pickle
 from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
 from httplib2 import Http
 from oauth2client import file
 from email.mime.text import MIMEText
@@ -82,11 +85,23 @@ def send_message(service, message):
 
 
 if __name__ == '__main__':
-    store = file.Storage('token.json')
-    creds = store.get()
-    if not creds or creds.invalid:
-        print('Google credentials error. Cannot validate to send minutes email.')
-    service = build('gmail', 'v1', http=creds.authorize(Http()))
+    creds = None
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('gmail', 'v1', credentials=creds)
 
     site = pywikibot.Site()
     cat = pywikibot.Category(site,'Category:Meeting Minutes')
@@ -102,5 +117,5 @@ if __name__ == '__main__':
         if(nextWeek == minuteDate.date()):
             if 'Minutes:Meeting Minutes' in page.title():
                 send_message(service, write_message(page, 'member', minuteDate))
-            elif 'Minutes:Board Meeting Minutes' in page.tite():
+            elif 'Minutes:Board Meeting Minutes' in page.title():
                 send_message(service, write_message(page, 'board', minuteDate))
