@@ -6,7 +6,6 @@
 # copyright 2019 Mike Fink
 # MIT License
 
-from bs4 import BeautifulSoup as bsoup
 import pywikibot
 import datetime
 import re
@@ -14,8 +13,6 @@ import os
 import pickle
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
-from httplib2 import Http
-from oauth2client import file
 from email.mime.text import MIMEText
 import base64
 from googleapiclient.errors import HttpError
@@ -24,7 +21,7 @@ from pywikibot import pagegenerators
 SCOPES = 'https://www.googleapis.com/auth/gmail.send'
 SENDTO = 'i3detroit@googlegroups.com'
 SECNAME = 'Mike'
-MEMBER_EMAIL_TEMPLATE = '''The next i3Detroit member meeting will be Tuesday, {} at 7:30 pm. Please add announcements and discussion topics to the agenda below. Zone coordinators, please fill out the zone update for your zone.
+MEMBER_EMAIL_TEMPLATE = '''The next i3Detroit member meeting will be {} at 7:30 pm. Please add announcements and discussion topics to the agenda below. Zone coordinators, please fill out the zone update for your zone.
 <br><br>
 Agenda link: https://www.i3detroit.org/wiki/{}
 <br><br>
@@ -32,7 +29,7 @@ See the following HOWTO for guidelines and tips for adding new agenda topics: ht
 <br><br>
 Thanks,<br>
 {}'''
-BOARD_EMAIL_TEMPLATE = '''The next i3Detroit Board of Directors meeting will be Tuesday, {} at 7:30 pm. Please add discussion topics to the agenda below. Officers, please fill out the your officer reports.
+BOARD_EMAIL_TEMPLATE = '''The next i3Detroit Board of Directors meeting will be {} at 7:30 pm. Please add discussion topics to the agenda below. Officers, please fill out the your officer reports.
 <br><br>
 Agenda link: https://www.i3detroit.org/wiki/{}
 <br><br>
@@ -49,11 +46,11 @@ def write_message(page, meeting_type, meeting_date):
             subject = "{:%B %Y} First Tuesday Member Meeting - Call for Topics".format(meeting_date)
         else: # else is third tuesday
             subject = "{:%B %Y} Third Tuesday Member Meeting - Call for Topics".format(meeting_date)
-        message_text = MEMBER_EMAIL_TEMPLATE.format('{:%B %d, %Y}'.format(meeting_date), re.sub(" ", "_", page.title()), SECNAME)
+        message_text = MEMBER_EMAIL_TEMPLATE.format('{:%A, %B %d, %Y}'.format(meeting_date), re.sub(" ", "_", page.title()), SECNAME)
 
     elif meeting_type == 'board':
         subject = "{:%B %Y} Board of Directors Meeting - Call for Topics".format(meeting_date)
-        message_text = BOARD_EMAIL_TEMPLATE.format('{:%B %d, %Y}'.format(meeting_date), re.sub(" ", "_", page.title()), SECNAME)
+        message_text = BOARD_EMAIL_TEMPLATE.format('{:%A, %B %d, %Y}'.format(meeting_date), re.sub(" ", "_", page.title()), SECNAME)
     else:
         print("Not a member meeting or board meeting. Nothing to send.")
         exit()
