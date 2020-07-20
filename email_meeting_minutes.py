@@ -13,27 +13,32 @@ import os
 import pickle
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 from email.mime.text import MIMEText
 import base64
 from googleapiclient.errors import HttpError
 from pywikibot import pagegenerators
 
-SCOPES = 'https://www.googleapis.com/auth/gmail.send'
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 SENDTO = 'i3detroit@googlegroups.com'
-SECNAME = 'Mike'
-MEMBER_EMAIL_TEMPLATE = '''The next i3Detroit member meeting will be {} at 7:30 pm. Please add announcements and discussion topics to the agenda below. Zone coordinators, please fill out the zone update for your zone.
+SECNAME = 'Secretary'
+MEMBER_EMAIL_TEMPLATE = '''The next i3Detroit member meeting will be {} at 7:30 pm. Meetings are held virtually on Google Meet during the pandemic--see below for details. Please add announcements and discussion topics to the agenda below. Zone coordinators, please fill out the zone update for your zone.
 <br><br>
 Agenda link: https://www.i3detroit.org/wiki/{}
 <br><br>
 See the following HOWTO for guidelines and tips for adding new agenda topics: https://www.i3detroit.org/wiki/HOWTO_Add_a_Topic_to_Meeting_Minutes_on_the_Wiki
+<br><br>
+You can join the meeting remotely on Google Meet at https://www.i3detroit.org/meeting. In virtual meetings, use the text chat for raising your hand. Please avoid conversation there so there are not multiple conversations happening at once. Attendance and votes happen in the #meetings slack channel: https://i3detroit.slack.com/archives/C0101CX23LN.
 <br><br>
 Thanks,<br>
 {}'''
-BOARD_EMAIL_TEMPLATE = '''The next i3Detroit Board of Directors meeting will be {} at 7:30 pm. Please add discussion topics to the agenda below. Officers, please fill out the your officer reports.
+BOARD_EMAIL_TEMPLATE = '''The next i3Detroit Board of Directors meeting will be {} at 7:30 pm. Meetings are held virtually on Google Meet during the pandemic--see below for details. Please add discussion topics to the agenda below. Officers, please fill out the your officer reports.
 <br><br>
 Agenda link: https://www.i3detroit.org/wiki/{}
 <br><br>
 See the following HOWTO for guidelines and tips for adding new agenda topics: https://www.i3detroit.org/wiki/HOWTO_Add_a_Topic_to_Meeting_Minutes_on_the_Wiki
+<br><br>
+You can join the meeting remotely on Google Meet at https://www.i3detroit.org/meeting. In virtual meetings, use the text chat for raising your hand. Please avoid conversation there so there are not multiple conversations happening at once. Attendance and votes happen in the #meetings slack channel: https://i3detroit.slack.com/archives/C0101CX23LN.
 <br><br>
 Thanks,<br>
 {}'''
@@ -72,6 +77,7 @@ def send_message(service, message):
     Returns:
         Sent Message.
     '''
+    print('{now} Sending message...'.format(now=datetime.datetime.now()))
     try:
         message = (service.users().messages().send(userId='me', body=message)
                    .execute())
@@ -82,23 +88,28 @@ def send_message(service, message):
 
 
 if __name__ == '__main__':
-    creds = None
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+    print('{now} Running...'.format(now=datetime.datetime.now()))
+    try:
+        creds = None
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    'credentials.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open('token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
 
-    service = build('gmail', 'v1', credentials=creds)
+        service = build('gmail', 'v1', credentials=creds)
+    except:
+        print('{now} Error authenticating with google. Exiting'.format(now=datetime.datetime.now()))
+        exit()
 
     site = pywikibot.Site()
     cat = pywikibot.Category(site,'Category:Meeting Minutes')
