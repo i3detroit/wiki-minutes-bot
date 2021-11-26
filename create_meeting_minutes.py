@@ -1,4 +1,4 @@
-#!usr/bin/env python
+#!/usr/bin/env python
 
 # Automatic i3 Detroit Meeting Minutes page creation on our wiki at i3detroit.org/wiki
 # Can be run from cron daily or just on Tuesdays.
@@ -37,17 +37,11 @@ def check_day(today_date):
         template_page = pywikibot.Page(site, u'Fundraising Committee Meeting Minutes Template')
         meeting_date = nth_weekday(date.today() + timedelta(31), 1, 1)
         write_minutes(title, template_page, meeting_date)
-    # Third Tuesday Member Meeting - next meeting is first tuesday of next month
-    elif nth_weekday(today_date, 3, 1) == today_date:
-        title = 'Minutes:Meeting Minutes'
-        template_page = pywikibot.Page(site, u'Meeting_Minutes_Template')
-        meeting_date = nth_weekday(today_date + timedelta(weeks=4), 1, 1)
-        write_minutes(title, template_page, meeting_date)
-    # Second Tuesday Board Meeting - next meeting is second tuesay of next month
-    elif today_date == nth_weekday(today_date, 2, 1):
+    # Third Tuesday Board Meeting - next meeting is second tuesay of next month
+    elif today_date == nth_weekday(today_date, 3, 1):
         title = 'Minutes:Board Meeting Minutes'
         template_page = pywikibot.Page(site, u'Board_Meeting_Minutes_Template')
-        meeting_date = nth_weekday(today_date + timedelta(weeks=4), 2, 1)
+        meeting_date = nth_weekday(today_date + timedelta(weeks=4), 3, 1)
         write_minutes(title, template_page, meeting_date)
     else:
         print(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
@@ -57,7 +51,7 @@ def write_minutes(title, template_page, meeting_date):
     date_str = '{:%m-%d-%Y}'.format(meeting_date)
     date_title_str = '{:%Y%m%d}'.format(meeting_date)
     meeting_page_name = u'{} {}'.format(title, date_title_str)
-    
+
     newpage = pywikibot.Page(site, meeting_page_name)
     if len(newpage.text) > 0:
         print(str(today_date) + ' Error: Page already exists. Exiting.')

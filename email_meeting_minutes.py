@@ -47,10 +47,7 @@ Thanks,<br>
 def write_message(page, meeting_type, meeting_date):
     ''' Write appropriate meeting minutes email '''
     if meeting_type == 'member':
-        if meeting_date.day < 8: # if is first tuesday
-            subject = "{:%B %Y} First Tuesday Member Meeting - Call for Topics".format(meeting_date)
-        else: # else is third tuesday
-            subject = "{:%B %Y} Third Tuesday Member Meeting - Call for Topics".format(meeting_date)
+        subject = "{:%B %Y} First Tuesday Member Meeting - Call for Topics".format(meeting_date)
         message_text = MEMBER_EMAIL_TEMPLATE.format('{:%A, %B %d, %Y}'.format(meeting_date), re.sub(" ", "_", page.title()), SECNAME)
 
     elif meeting_type == 'board':
