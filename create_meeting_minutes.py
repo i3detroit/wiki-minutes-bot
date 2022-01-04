@@ -26,22 +26,22 @@ def nth_weekday(the_date, nth_week, week_day):
 
 def check_day(today_date):
     ''' Write meeting minutes based on page template for the next meeting '''
-    # First Tuesday Member Meeting - next meeting is in 2 weeks
+    # First Tuesday Member Meeting - next meeting first tuesday next month
     if today_date == nth_weekday(today_date, 1, 1):
         title = 'Minutes:Meeting Minutes'
         template_page = pywikibot.Page(site, u'Meeting_Minutes_Template')
-        meeting_date = today_date + timedelta(14)
+        meeting_date = nth_weekday(date.today() + timedelta(31), 1, 1)
         write_minutes(title, template_page, meeting_date)
         # First Tuesday Fundraising Meeting - next meeting first tuesday next month
         title = 'Minutes:Fundraising Committee Meeting Minutes'
         template_page = pywikibot.Page(site, u'Fundraising Committee Meeting Minutes Template')
         meeting_date = nth_weekday(date.today() + timedelta(31), 1, 1)
         write_minutes(title, template_page, meeting_date)
-    # Third Tuesday Board Meeting - next meeting is second tuesay of next month
+    # Third Tuesday Board Meeting - next meeting is third tuesday of next month
     elif today_date == nth_weekday(today_date, 3, 1):
         title = 'Minutes:Board Meeting Minutes'
         template_page = pywikibot.Page(site, u'Board_Meeting_Minutes_Template')
-        meeting_date = nth_weekday(today_date + timedelta(weeks=4), 3, 1)
+        meeting_date = nth_weekday(date.today() + timedelta(31), 3, 1)
         write_minutes(title, template_page, meeting_date)
     else:
         print(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
