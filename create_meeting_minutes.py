@@ -9,6 +9,9 @@
 # copyright 2019 Mike Fink
 # MIT License
 
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 from bs4 import BeautifulSoup as bsoup
 import pywikibot
 from datetime import date, timedelta

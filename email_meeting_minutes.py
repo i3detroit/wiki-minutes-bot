@@ -6,10 +6,12 @@
 # copyright 2019 Mike Fink
 # MIT License
 
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 import pywikibot
 import datetime
 import re
-import os
 import pickle
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -18,6 +20,7 @@ from email.mime.text import MIMEText
 import base64
 from googleapiclient.errors import HttpError
 from pywikibot import pagegenerators
+
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 SENDTO = 'i3detroit@googlegroups.com'
