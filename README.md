@@ -7,8 +7,8 @@ Email notifications for member and board meetings are emailed out one week in ad
 
 `create_meeting_minutes.py` expects to be run on a Tuesday. Add to crontab and fill in paths:
 ```
-0 0 * * 2 /usr/bin/python $WIKI_MINUTES_BOT_DIR/create_meeting_minutes.py >> $LOG_LOCATION/minutes_creation.log 2>&1
-0 0 * * 2 /usr/bin/python $WIKI_MINUTES_BOT_DIR/email_meeting_minutes.py >> $LOG_LOCATION/minutes_email.log 2>&1
+0 0 * * 2 /usr/bin/python3 $WIKI_MINUTES_BOT_DIR/create_meeting_minutes.py >> $LOG_LOCATION/minutes_creation.log 2>&1
+0 0 * * 2 /usr/bin/python3 $WIKI_MINUTES_BOT_DIR/email_meeting_minutes.py >> $LOG_LOCATION/minutes_email.log 2>&1
 ```
 
 
