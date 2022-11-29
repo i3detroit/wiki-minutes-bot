@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Automatic i3 Detroit Meeting Minutes page creation on our wiki at i3detroit.org/wiki
 # Can be run from cron daily or just on Tuesdays.
