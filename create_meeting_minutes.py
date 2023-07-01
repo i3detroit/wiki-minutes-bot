@@ -51,7 +51,7 @@ def check_day(today_date):
         exit()
 
 def write_minutes(title, template_page, meeting_date):
-    date_str = '{:%m-%d-%Y}'.format(meeting_date)
+    date_str = '{:%Y-%m-%d}'.format(meeting_date)
     date_title_str = '{:%Y%m%d}'.format(meeting_date)
     meeting_page_name = u'{} {}'.format(title, date_title_str)
 
