@@ -25,7 +25,7 @@ from pywikibot import pagegenerators
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 SENDTO = 'i3detroit@googlegroups.com'
 SECNAME = 'Secretary'
-MEMBER_EMAIL_TEMPLATE = '''The next i3Detroit member meeting will be {} at 7:30 pm. Meetings are held virtually on Google Meet during the pandemic--see below for details. Please add announcements and discussion topics to the agenda below. Zone coordinators, please fill out the zone update for your zone.
+MEMBER_EMAIL_TEMPLATE = '''The next i3Detroit member meeting will be {} at 7:30 pm. Meetings are hybrid meaning simultaneously online & in person. Please add announcements and discussion topics to the agenda below. Zone coordinators, please fill out the zone update for your zone.
 <br><br>
 Agenda link: https://www.i3detroit.org/wiki/{}
 <br><br>
@@ -35,7 +35,7 @@ You can join the meeting remotely on Google Meet at https://www.i3detroit.org/me
 <br><br>
 Thanks,<br>
 {}'''
-BOARD_EMAIL_TEMPLATE = '''The next i3Detroit Board of Directors meeting will be {} at 7:30 pm. Meetings are held virtually on Google Meet during the pandemic--see below for details. Please add discussion topics to the agenda below. Officers, please fill out the your officer reports.
+BOARD_EMAIL_TEMPLATE = '''The next i3Detroit Board of Directors meeting will be {} at 7:30 pm. Meetings are held virtually on Google Meet. Please add discussion topics to the agenda below. Officers, please fill out the your officer reports.
 <br><br>
 Agenda link: https://www.i3detroit.org/wiki/{}
 <br><br>
