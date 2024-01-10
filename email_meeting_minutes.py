@@ -120,9 +120,9 @@ if __name__ == '__main__':
         if not match:
            continue
         date = match.group(0)
-        nextWeek = datetime.date.today() + datetime.timedelta(days=7)
+        futureDate = datetime.date.today() + datetime.timedelta(days=14)
         minuteDate = datetime.datetime.strptime(date, '%Y%m%d')
-        if(nextWeek == minuteDate.date()):
+        if(futureDate == minuteDate.date()):
             if 'Minutes:Meeting Minutes' in page.title():
                 send_message(service, write_message(page, 'member', minuteDate))
             elif 'Minutes:Board Meeting Minutes' in page.title():
