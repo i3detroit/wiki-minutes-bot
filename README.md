@@ -16,27 +16,22 @@ Email notifications for member and board meetings are emailed out one week in ad
 ### pywikibot + bot user
 This worked on pywikibot commit `b78fa049e` on 2021-01-30.
 ```
-pip3 install -r requirements.txt
-git clone --recursive --branch stable https://gerrit.wikimedia.org/r/pywikibot/core.git pwb
-cd pwb
+# Use a venv
 pip3 install -r requirements.txt
 
-# to update:
-#    git pull origin stable --recurse-submodules # This updates everything
-
-python3 pwb.py generate_family_file.py
+pwb generate_family_file.py
 # https://www.i3detroit.org/wiki/Main_Page
 # i3
 
 # go to https://www.i3detroit.org/wiki/Special:BotPasswords
 # make a bot
-python3 pwb.py generate_user_files
+pwb generate_user_files
 # choose i3
 # *your* username
 # add bot password
 # bot username and password
 
-python3 pwb/pwb.py [whatever script you want to run]
+pwb [whatever script you want to run]
 ```
 
 ### google setup
