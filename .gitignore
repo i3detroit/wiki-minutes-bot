@@ -2,3 +2,6 @@ minutes_creation.log
 pywikibot.lwp
 token.json
 pwb
+throttle.ctrl
+logs
+apicache
