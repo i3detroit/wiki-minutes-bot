@@ -10,8 +10,9 @@ WORKDIR /pwb
 RUN git clone --recurse-submodules --shallow-submodules --depth 1 https://gerrit.wikimedia.org/r/pywikibot/core.git --branch 10.7.2
 WORKDIR  /pwb/core
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python", "/pwb/core/pwb.py"]
 
 WORKDIR /wmb
 COPY . .
 RUN pip install -r requirements.txt
+
+ENTRYPOINT ["/wmb/entrypoint.sh"]
