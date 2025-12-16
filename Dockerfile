@@ -15,6 +15,5 @@ WORKDIR /wmb
 COPY . .
 RUN pip install -r requirements.txt
 ENV PWB_USERNAME=WikiBot
-ENV PWB_PASSWORD=
 
 ENTRYPOINT ["/wmb/entrypoint.sh"]
