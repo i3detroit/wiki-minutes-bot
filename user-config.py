@@ -6,4 +6,4 @@ mylang = 'en'
 family = 'i3detroit'
 usernames['i3detroit']['en'] = 'Test'  # FIXME: Check when wiki is online
 
-family_files['i3detroit'] = 'https://i3detroit.org/api.php'  # FIXME: Check when wiki is online
+family_files['i3detroit'] = 'https://i3detroit.org/wi/api.php'

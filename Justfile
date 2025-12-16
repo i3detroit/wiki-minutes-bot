@@ -10,4 +10,4 @@ build:
 
 # Run a script
 run *ARGS:
-  docker run --rm -v $PWD:/wmb localhost/wiki-minutes-bot {{ARGS}}
+  docker run -it --rm -v $PWD:/wmb localhost/wiki-minutes-bot {{ARGS}}
