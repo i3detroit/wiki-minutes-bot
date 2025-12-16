@@ -1,9 +1,8 @@
-# This is a sample file. You can use generate_user_files script
-# to create your user-config.py file:
-# pwb generate_user_files
-
-mylang = 'en'
 family = 'i3detroit'
-usernames['i3detroit']['en'] = 'Test'  # FIXME: Check when wiki is online
+mylang = 'i3detroit'
+usernames[family][mylang] = 'WikiBot'
 
-family_files['i3detroit'] = 'https://i3detroit.org/wi/api.php'
+family_files[family] = 'https://i3detroit.org/wi/api.php'
+
+# This is written out by envvars by entrypoint.sh
+password_file = '/tmp/pwb-password.py'
