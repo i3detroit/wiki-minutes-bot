@@ -12,8 +12,11 @@ WORKDIR  /pwb/core
 RUN pip install -r requirements.txt
 
 WORKDIR /wmb
-COPY . .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
+COPY user-config.py /pwb/core/user-config.py
+COPY . .
+
 ENV PWB_USERNAME=WikiBot
 
 ENTRYPOINT ["/wmb/entrypoint.sh"]
