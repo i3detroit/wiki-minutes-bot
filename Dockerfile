@@ -18,5 +18,6 @@ COPY user-config.py /pwb/core/user-config.py
 COPY . .
 
 ENV PWB_USERNAME=WikiBot
+ENV TZ=America/Detroit
 
 ENTRYPOINT ["/wmb/entrypoint.sh"]
