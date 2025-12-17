@@ -6,3 +6,5 @@ throttle.ctrl
 logs
 apicache
 /.env
+pywikibot-WikiBot.lwp
+deadlinks/
