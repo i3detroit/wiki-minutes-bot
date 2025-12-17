@@ -71,6 +71,7 @@ if __name__ == '__main__':
     today_date = date.today()
     if today_date.weekday() == 1:
         site = pywikibot.Site()
+        site.login()
         check_day(today_date)
         exit()
     else:

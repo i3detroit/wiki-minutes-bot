@@ -112,6 +112,7 @@ if __name__ == '__main__':
         exit()
 
     site = pywikibot.Site()
+    site.login()
     cat = pywikibot.Category(site,'Category:Meeting Minutes')
     gen = pagegenerators.CategorizedPageGenerator(cat, recurse=True)
     matches = []
