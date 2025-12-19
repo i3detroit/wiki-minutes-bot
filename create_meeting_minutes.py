@@ -17,6 +17,11 @@ import pywikibot
 from datetime import date, timedelta
 from re import sub
 
+def log(text):
+    print(text)
+    with open("log_minutes", "a") as myfile:
+        myfile.write(text)
+
 
 def nth_weekday(the_date, nth_week, week_day):
     ''' calculate the nth $weekday in the month of the input date (0 = Monday) '''
@@ -47,7 +52,7 @@ def check_day(today_date):
         meeting_date = nth_weekday(date.today() + timedelta(31), 3, 1)
         write_minutes(title, template_page, meeting_date)
     else:
-        print(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
+        log(str(today_date) + ' Not first, second, or third Tuesday. Exiting.')
         exit()
 
 def write_minutes(title, template_page, meeting_date):
@@ -57,12 +62,12 @@ def write_minutes(title, template_page, meeting_date):
 
     newpage = pywikibot.Page(site, meeting_page_name)
     if len(newpage.text) > 0:
-        print(str(today_date) + ' Error: Page already exists. Exiting.')
+        log(str(today_date) + ' Error: Page already exists. Exiting.')
         exit()
 
     template_text = str(bsoup(template_page.text, 'html.parser').pre)[5:-6]
     newpage.text = sub('01-01-20\d\d', date_str, template_text)
-    print('{} Saving minutes for {}'.format(str(today_date), str(meeting_date)))
+    log('{} Saving minutes for {}'.format(str(today_date), str(meeting_date)))
     newpage.save(u'Automatic minutes creation')
 
 
@@ -74,5 +79,5 @@ if __name__ == '__main__':
         check_day(today_date)
         exit()
     else:
-        print(str(today_date) + ' Not Tuesday. Exiting.')
+        log(str(today_date) + ' Not Tuesday. Exiting.')
         exit()
