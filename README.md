@@ -22,10 +22,6 @@ This is utilizing [just](https://just.systems/). If you don't want to install it
 `just run <cmd>` runs a command with the container, with the source mounted, `.env` handled, and such.
 
 
-### Non-docker
-
-TODO
-
 
 ## Authentication
 
