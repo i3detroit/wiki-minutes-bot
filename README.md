@@ -13,31 +13,19 @@ Email notifications for member and board meetings are emailed out one week in ad
 
 
 ## Setup
-### pywikibot + bot user
-This worked on pywikibot commit `b78fa049e` on 2021-01-30.
-```
-pip3 install -r requirements.txt
-git clone --recursive --branch stable https://gerrit.wikimedia.org/r/pywikibot/core.git pwb
-cd pwb
-pip3 install -r requirements.txt
+### Docker
 
-# to update:
-#    git pull origin stable --recurse-submodules # This updates everything
+This is utilizing [just](https://just.systems/). If you don't want to install it, go read the `Justfile` to see the full commands.
 
-python3 pwb.py generate_family_file.py
-# https://www.i3detroit.org/wiki/Main_Page
-# i3
+`just build` tags a `localhost/wiki-minutes-bot` container.
 
-# go to https://www.i3detroit.org/wiki/Special:BotPasswords
-# make a bot
-python3 pwb.py generate_user_files
-# choose i3
-# *your* username
-# add bot password
-# bot username and password
+`just run <cmd>` runs a command with the container, with the source mounted, `.env` handled, and such.
 
-python3 pwb/pwb.py [whatever script you want to run]
-```
 
-### google setup
-`token.json` is google magic.
+
+## Authentication
+
+The container accepts authentication by environment variables:
+
+* `PWB_USERNAME`/`PWB_PASSWORD` if you're using standard password authentication
+* `PWB_USERNAME`/`PWB_BOTNAME`/`PWB_BOTPASS` if you're using [bot passwords](https://www.mediawiki.org/wiki/Manual:Pywikibot/BotPasswords)

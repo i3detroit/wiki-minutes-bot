@@ -66,7 +66,7 @@ def write_minutes(title, template_page, meeting_date):
         exit()
 
     template_text = str(bsoup(template_page.text, 'html.parser').pre)[5:-6]
-    newpage.text = sub('01-01-20\d\d', date_str, template_text)
+    newpage.text = sub(r'01-01-20\d\d', date_str, template_text)
     log('{} Saving minutes for {}'.format(str(today_date), str(meeting_date)))
     newpage.save(u'Automatic minutes creation')
 
@@ -76,6 +76,7 @@ if __name__ == '__main__':
     today_date = date.today()
     if today_date.weekday() == 1:
         site = pywikibot.Site()
+        site.login()
         check_day(today_date)
         exit()
     else:
