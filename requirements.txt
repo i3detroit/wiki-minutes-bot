@@ -1,5 +1,3 @@
-google-api-python-client
-google_auth_oauthlib
 beautifulsoup4
 # pywikibot isn't being installed through pip because Reasons(tm)
 # pywikibot

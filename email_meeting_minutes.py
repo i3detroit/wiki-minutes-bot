@@ -13,12 +13,8 @@ import pywikibot
 import datetime
 import re
 import pickle
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from email.mime.text import MIMEText
 import base64
-from googleapiclient.errors import HttpError
 from pywikibot import pagegenerators
 
 
@@ -79,9 +75,10 @@ def send_message(service, message):
     '''
     print('{now} Sending message...'.format(now=datetime.datetime.now()))
     try:
-        message = (service.users().messages().send(userId='me', body=message)
-                   .execute())
-        print('Meeting email sent. Message Id: %s' % message['id'])
+        with SMTP_SSL(host="smtp-relay.gmail.com") as s:
+            s.sendmail("noreply@i3detroit.org", "mtfurlan@i3detroit.org", message)
+            # TESTING: todo change
+        print('Meeting email sent.')
         return message
     except HttpError as error:
         print('An error occurred sending meeting email: %s' % error)
@@ -89,27 +86,6 @@ def send_message(service, message):
 
 if __name__ == '__main__':
     print('{now} Running...'.format(now=datetime.datetime.now()))
-    try:
-        creds = None
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
-                creds = pickle.load(token)
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
-                creds = flow.run_local_server(port=0)
-            # Save the credentials for the next run
-            with open('token.pickle', 'wb') as token:
-                pickle.dump(creds, token)
-
-        service = build('gmail', 'v1', credentials=creds)
-    except:
-        print('{now} Error authenticating with google. Exiting'.format(now=datetime.datetime.now()))
-        exit()
 
     site = pywikibot.Site()
     site.login()
@@ -125,6 +101,6 @@ if __name__ == '__main__':
         minuteDate = datetime.datetime.strptime(date, '%Y%m%d')
         if(futureDate == minuteDate.date()):
             if 'Minutes:Meeting Minutes' in page.title():
-                send_message(service, write_message(page, 'member', minuteDate))
+                send_message(write_message(page, 'member', minuteDate))
             elif 'Minutes:Board Meeting Minutes' in page.title():
-                send_message(service, write_message(page, 'board', minuteDate))
+                send_message(write_message(page, 'board', minuteDate))
