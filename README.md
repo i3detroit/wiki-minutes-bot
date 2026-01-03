@@ -7,8 +7,8 @@ Email notifications for member and board meetings are emailed out one week in ad
 
 `create_meeting_minutes.py` expects to be run on a Tuesday. Add to crontab and fill in paths:
 ```
-0 0 * * 2 docker run --pull --rm --env-file=$HOME/wiki-minutes-bot/.env ghcr.io/i3detroit/wiki-minutes-bot:trunk create_meeting_minutes.py
-0 0 * * 2 docker run --pull --rm --env-file=$HOME/wiki-minutes-bot/.env ghcr.io/i3detroit/wiki-minutes-bot:trunk email_meeting_minutes.py
+0 0 * * 2 docker run --pull=always --rm --env-file=$HOME/wiki-minutes-bot/.env ghcr.io/i3detroit/wiki-minutes-bot:trunk create_meeting_minutes.py
+0 0 * * 2 docker run --pull=always --rm --env-file=$HOME/wiki-minutes-bot/.env ghcr.io/i3detroit/wiki-minutes-bot:trunk email_meeting_minutes.py
 ```
 
 
