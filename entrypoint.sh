@@ -14,6 +14,7 @@ with open("/tmp/pwb-password.py", "at") as passfile:
         print(f"({os.environ['PWB_USERNAME']!r}, BotPassword({os.environ['PWB_BOTNAME']!r}, {os.environ['PWB_BOTPASS']!r}))", file=passfile)
 
 EOF
+chmod 600 /tmp/pwb-password.py
 
 if which $1 > /dev/null; then
     exec "$@"
